@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Convite de Aniversário</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <!-- Adiciona a biblioteca qrcode.js -->
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
   <style>
     body {
@@ -47,7 +49,8 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
       text-align: center;
-      max-width: 100%; /* Alterado para 100% para telas pequenas */
+      max-width: 400px;
+      width: 100%;
       position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
       z-index: 1; /* Coloca o conteúdo sobre o fundo */
     }
@@ -68,102 +71,63 @@
       margin: 10px 0;
     }
 
-    .confirmation,
+    .confirmation {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
     .address {
       margin-top: 20px;
       font-size: 14px;
     }
 
-    .confirmation a,
-    .address a {
-      text-decoration: none;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      display: inline-block;
-      margin-top: 10px;
-      transition: background-color 0.3s ease;
-    }
-
-    .confirmation a:hover,
-    .address a:hover {
-      background-color: #0056b3;
-    }
-
-    /* Botões personalizados */
-    .confirmation button,
-    .address button {
-      background-color: #007bff;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin-top: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .confirmation button:hover,
-    .address button:hover {
-      background-color: #0056b3;
-    }
-
     /* Botão de play estilizado */
-    #playButton {
+    #playButton,
+    #uberButton,
+    #confirmButton,
+    #zeDeliveryButton {
       background-color: #007bff;
       border: none;
       color: white;
-      padding: 10px 20px;
+      padding: 15px 30px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 16px;
-      margin-top: 10px;
+      font-size: 18px;
+      margin-top: 20px;
       cursor: pointer;
-      border-radius: 50%; /* Borda arredondada para criar um botão de play circular */
+      border-radius: 5px;
+      transition: background-color 0.3s;
     }
 
-    #playButton:hover {
+    #playButton:hover,
+    #uberButton:hover,
+    #confirmButton:hover,
+    #zeDeliveryButton:hover {
       background-color: #0056b3;
     }
 
-    /* Estilos para o QR Code */
-    .qr-code {
+    /* Estilo adicional para o QR Code e o contêiner abaixo do botão */
+    #qrCodeContainerWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #qrcodeContainer {
       margin-top: 20px;
-      text-align: center; /* Centraliza o conteúdo */
-    }
-
-    .qr-code a {
-      display: block; /* Faz com que a âncora ocupe todo o espaço disponível */
-    }
-
-    .qr-code img {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-    }
-
-    /* Regras de mídia para tornar o convite responsivo */
-    @media screen and (max-width: 600px) {
-      .qr-code img {
-        max-width: 80%;
-      }
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
   <img class="background" src="imagem.gif" alt="Background GIF">
   <div class="overlay"></div>
   <div class="invitation">
-    <h1>Renaissance by </h1>
-    <h2>Erick Peterson</h2>
-    <p>Você foi convidado para celebrar o meu aniversário!</p>
-    <p>Aperte o play</p>
+    <h1>Renaissance by </h1><h2>Erick Peterson</h2>
+    <p>Você foi convidado para celebrar o meu aniversário!</p> <p>
+      Aperte o play!
+    </p>
 
     <!-- Botão de play estilizado -->
     <button id="playButton" onclick="togglePlay()">
@@ -183,33 +147,32 @@
     </div>
 
     <div class="confirmation">
-      <button onclick="confirmPresence()">
-        Confirmar Presença <i class="fas fa-check"></i>
-      </button>
+      <p>Por favor, confirme sua presença até 10/01/2023.</p>
+      <a href="https://wa.me/+5524981203032/?text=Oi Erick, minha presença ta confirmada. E fica tranquilo que sei que voçê é meu fã, e não fã do meu amigo. te vejo lá!! Bjs!"></a>
     </div>
 
-    <div class="address">
-      <button onclick="callUber()">
-        Chamar Uber <i class="fab fa-uber"></i>
+    <!-- Novos botões adicionados -->
+    <button id="uberButton" onclick="callUber()">
+      <i class="fab fa-uber"></i> Chamar Uber
+    </button>
+
+    <button id="confirmButton" onclick="confirmPresence()">
+      <i class="far fa-check-circle"></i> Confirmar Presença
+    </button>
+
+    <!-- Adiciona um contêiner para o QR Code e o posiciona abaixo do último botão -->
+    <div id="qrCodeContainerWrapper">
+      <button id="zeDeliveryButton" onclick="callZeDelivery()">
+        <i class="fas fa-motorcycle"></i> Chamar Ze Delivery
       </button>
 
-      <!-- Novo botão para chamar Zé Delivery -->
-      <button onclick="callZeDelivery()">
-        Chamar Zé Delivery <i class="fas fa-motorcycle"></i>
-      </button>
-    </div>
-
-    <!-- Adicionando um QR Code -->
-    <div class="qr-code">
-      <a href="https://www.youtube.com/shorts/v1SwEEO9nUM" target="_blank"> <!-- Substitua "link_do_seu_qr_code_destino" pelo seu link desejado -->
-        <img src="convite.jpg" alt="QR Code">
-      </a>
-      <p>Escaneie ou clique no QR Code para acessar o convite</p>
+      <!-- Adiciona um contêiner para o QR Code -->
+      <div id="qrcodeContainer"></div> Escaneie ou clique para acessar o convite
     </div>
   </div>
 
   <script>
-    // Funções para alternar a reprodução e pausa da música, confirmar presença, chamar Uber e Zé Delivery
+    // Função para alternar a reprodução e pausa da música
     function togglePlay() {
       var audio = document.getElementById('backgroundMusic');
       if (audio.paused) {
@@ -219,21 +182,37 @@
       }
     }
 
-    function confirmPresence() {
-      // Adicione a lógica desejada para confirmar a presença
-      alert('Presença confirmada! Obrigado!');
-    }
-
+    // Função para chamar o Uber
     function callUber() {
-      // Adicione a lógica desejada para chamar o Uber
-      alert('Uber chamado! Chegue com segurança!');
+      window.open("https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=R.%20Onze%2C%20lote%203%20-%20Casal%20Garcia%20I%2C%20Itatiaia%20-%20RJ%2C%2027580-000", "_blank");
     }
 
-    function callZeDelivery() {
-      // Redireciona para o link do Zé Delivery
-      window.location.href = 'https://www.ze.delivery/';
+    // Função para confirmar presença
+    function confirmPresence() {
+      window.location.href = "https://wa.me/+5524981203032/?text=Oi Erick, minha presença está confirmada. E fica tranquilo que sei que você é meu fã, e não fã do meu amigo. Te vejo lá!! Bjs!";
     }
+
+    // Função para chamar o Ze Delivery
+    function callZeDelivery() {
+      window.open("https://www.ze.delivery/", "_blank");
+    }
+
+    // Função para gerar o QR Code
+    function generateQRCode() {
+      var qrcode = new QRCode(document.getElementById("qrcodeContainer"), {
+        text: "https://www.youtube.com/shorts/v1SwEEO9nUM",
+        width: 128,
+        height: 128
+      });
+
+      // Adiciona um evento de clique para redirecionar para o link específico
+      document.getElementById("qrcodeContainer").addEventListener("click", function() {
+        window.location.href = "https://www.youtube.com/shorts/v1SwEEO9nUM";
+      });
+    }
+
+    // Chama a função para gerar o QR Code ao carregar a página
+    window.onload = generateQRCode;
   </script>
 </body>
-
 </html>
