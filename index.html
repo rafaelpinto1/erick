@@ -1,218 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convite de Aniversário</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Aniversário</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <!-- Adiciona a biblioteca qrcode.js -->
-  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <!-- Adiciona a biblioteca qrcode.js -->
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden; /* Impede o scroll na página */
-    }
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Impede o scroll na página */
+            background-image: url('imagem.gif');
+            background-size: cover;
+            background-position: center;
+        }
 
-    .background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none; /* Garante que a imagem não interaja com os elementos na frente */
-    }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.3); /* Alterado para 30% de opacidade */
+            z-index: 0; /* Coloca a sobreposição abaixo do conteúdo do convite */
+        }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.3); /* Alterado para 30% de opacidade */
-      z-index: 0; /* Coloca a sobreposição abaixo do conteúdo do convite */
-    }
+        .invitation {
+            background-color: rgba(255, 255, 255, 0.5); /* Alterado para 50% de opacidade */
+            border-radius: 15px; /* Adicionado border-radius para tornar o card redondo */
+            border: 2px solid silver; /* Adicionado uma borda prateada de 2 pixels */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%; /* Ajustado para 90% da largura do viewport */
+            position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
+            z-index: 1; /* Coloca o conteúdo sobre o fundo */
+        }
 
-    .invitation {
-      background-color: rgba(255, 255, 255, 0.5); /* Alterado para 50% de opacidade */
-      border-radius: 15px; /* Adicionado border-radius para tornar o card redondo */
-      border: 2px solid silver; /* Adicionado uma borda prateada de 2 pixels */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
-      position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
-      z-index: 1; /* Coloca o conteúdo sobre o fundo */
-    }
+        h1, h2, p {
+            color: #000;
+        }
 
-    h1 {
-      color: #000;
-    }
+        .event-details {
+            margin-top: 20px;
+        }
 
-    p {
-      color: #000;
-    }
+        .event-details p {
+            margin: 10px 0;
+        }
 
-    .event-details {
-      margin-top: 20px;
-    }
+        .confirmation {
+            margin-top: 20px;
+            font-size: 14px;
+        }
 
-    .event-details p {
-      margin: 10px 0;
-    }
+        /* Botões estilizados */
+        .action-button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-    .confirmation {
-      margin-top: 20px;
-      font-size: 14px;
-    }
+        .action-button:hover {
+            background-color: #0056b3;
+        }
 
-    .address {
-      margin-top: 20px;
-      font-size: 14px;
-    }
+        /* Estilo adicional para o QR Code e o contêiner abaixo do botão */
+        #qrCodeContainerWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
 
-    /* Botão de play estilizado */
-    #playButton,
-    #uberButton,
-    #confirmButton,
-    #zeDeliveryButton {
-      background-color: #007bff;
-      border: none;
-      color: white;
-      padding: 15px 30px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 18px;
-      margin-top: 20px;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    #playButton:hover,
-    #uberButton:hover,
-    #confirmButton:hover,
-    #zeDeliveryButton:hover {
-      background-color: #0056b3;
-    }
-
-    /* Estilo adicional para o QR Code e o contêiner abaixo do botão */
-    #qrCodeContainerWrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #qrcodeContainer {
-      margin-top: 20px;
-      cursor: pointer;
-    }
-  </style>
+        #qrcodeContainer {
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-  <img class="background" src="imagem.gif" alt="Background GIF">
-  <div class="overlay"></div>
-  <div class="invitation">
-    <h1>Renaissance by </h1><h2>Erick Peterson</h2>
-    <p>Você foi convidado para celebrar o meu aniversário!</p> <p>
-      Aperte o play!
-    </p>
+    <div class="overlay"></div>
+    <div class="invitation">
+        <h1>Renaissance by</h1>
+        <h2>Erick Peterson</h2>
+        <p>Você foi convidado para celebrar o meu aniversário!</p>
+        <p>Aperte o play!</p>
 
-    <!-- Botão de play estilizado -->
-    <button id="playButton" onclick="togglePlay()">
-      <i class="fas fa-play"></i>
-    </button>
+        <!-- Botão de play estilizado -->
+        <button class="action-button" onclick="togglePlay()">
+            <i class="fas fa-play"></i>
+        </button>
 
-    <!-- Áudio de fundo com controles dentro do convite -->
-    <audio id="backgroundMusic" loop>
-      <source src="musica.ogg" type="audio/ogg">
-      Seu navegador não suporta o elemento de áudio.
-    </audio>
+        <!-- Áudio de fundo com controles dentro do convite -->
+        <audio id="backgroundMusic" loop>
+            <source src="musica.ogg" type="audio/ogg">
+            Seu navegador não suporta o elemento de áudio.
+        </audio>
 
-    <div class="event-details">
-      <p><strong>Data:</strong> 13/01/2023 às 15h</p>
-      <p><strong>Local:</strong> Simone Espaço Fest</p>
-      <p><strong>Endereço:</strong> R. Onze, lote 3 - Casal Garcia I, Itatiaia - RJ, 27580-000</p>
+        <div class="event-details">
+            <p><strong>Data:</strong> 13/01/2023 às 15h</p>
+            <p><strong>Local:</strong> Simone Espaço Fest</p>
+            <p><strong>Endereço:</strong> R. Onze, lote 3 - Casal Garcia I, Itatiaia - RJ, 27580-000</p>
+        </div>
+
+        <div class="confirmation">
+            <p>Por favor, confirme sua presença até 10/01/2023.</p>
+            <a class="action-button" href="https://wa.me/+5524981203032/?text=Oi Erick, minha presença ta confirmada. E fica tranquilo que sei que voçê é meu fã, e não fã do meu amigo. te vejo lá!! Bjs!">
+                Confirmar Presença
+            </a>
+        </div>
+
+        <!-- Novos botões adicionados -->
+        <a class="action-button" onclick="callUber()">
+            <i class="fab fa-uber"></i> Chamar Uber
+        </a>
+
+        <a class="action-button" onclick="callZeDelivery()">
+            <i class="fas fa-motorcycle"></i> Chamar Ze Delivery
+        </a>
+
+        <!-- Adiciona um contêiner para o QR Code e o posiciona abaixo do último botão -->
+        <div id="qrCodeContainerWrapper">
+            <!-- Adiciona um contêiner para o QR Code -->
+            <div id="qrcodeContainer"></div>
+            <p>Escaneie ou clique para acessar o convite</p>
+        </div>
     </div>
 
-    <div class="confirmation">
-      <p>Por favor, confirme sua presença até 10/01/2023.</p>
-      <a href="https://wa.me/+5524981203032/?text=Oi Erick, minha presença ta confirmada. E fica tranquilo que sei que voçê é meu fã, e não fã do meu amigo. te vejo lá!! Bjs!"></a>
-    </div>
+    <script>
+        // Função para alternar a reprodução e pausa da música
+        function togglePlay() {
+            var audio = document.getElementById('backgroundMusic');
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
 
-    <!-- Novos botões adicionados -->
-    <button id="uberButton" onclick="callUber()">
-      <i class="fab fa-uber"></i> Chamar Uber
-    </button>
+        // Função para chamar o Uber
+        function callUber() {
+            window.open("https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=R.%20Onze%2C%20lote%203%20-%20Casal%20Garcia%20I%2C%20Itatiaia%20-%20RJ%2C%2027580-000", "_blank");
+        }
 
-    <button id="confirmButton" onclick="confirmPresence()">
-      <i class="far fa-check-circle"></i> Confirmar Presença
-    </button>
+        // Função para chamar o Ze Delivery
+        function callZeDelivery() {
+            window.open("https://www.ze.delivery/", "_blank");
+        }
 
-    <!-- Adiciona um contêiner para o QR Code e o posiciona abaixo do último botão -->
-    <div id="qrCodeContainerWrapper">
-      <button id="zeDeliveryButton" onclick="callZeDelivery()">
-        <i class="fas fa-motorcycle"></i> Chamar Ze Delivery
-      </button>
+        // Função para gerar o QR Code
+        function generateQRCode() {
+            var qrcode = new QRCode(document.getElementById("qrcodeContainer"), {
+                text: "https://www.youtube.com/shorts/v1SwEEO9nUM",
+                width: 128,
+                height: 128
+            });
 
-      <!-- Adiciona um contêiner para o QR Code -->
-      <div id="qrcodeContainer"></div> Escaneie ou clique para acessar o convite
-    </div>
-  </div>
+            // Adiciona um evento de clique para redirecionar para o link específico
+            document.getElementById("qrcodeContainer").addEventListener("click", function () {
+                window.location.href = "https://www.youtube.com/shorts/v1SwEEO9nUM";
+            });
+        }
 
-  <script>
-    // Função para alternar a reprodução e pausa da música
-    function togglePlay() {
-      var audio = document.getElementById('backgroundMusic');
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-    }
-
-    // Função para chamar o Uber
-    function callUber() {
-      window.open("https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=R.%20Onze%2C%20lote%203%20-%20Casal%20Garcia%20I%2C%20Itatiaia%20-%20RJ%2C%2027580-000", "_blank");
-    }
-
-    // Função para confirmar presença
-    function confirmPresence() {
-      window.location.href = "https://wa.me/+5524981203032/?text=Oi Erick, minha presença está confirmada. E fica tranquilo que sei que você é meu fã, e não fã do meu amigo. Te vejo lá!! Bjs!";
-    }
-
-    // Função para chamar o Ze Delivery
-    function callZeDelivery() {
-      window.open("https://www.ze.delivery/", "_blank");
-    }
-
-    // Função para gerar o QR Code
-    function generateQRCode() {
-      var qrcode = new QRCode(document.getElementById("qrcodeContainer"), {
-        text: "https://www.youtube.com/shorts/v1SwEEO9nUM",
-        width: 128,
-        height: 128
-      });
-
-      // Adiciona um evento de clique para redirecionar para o link específico
-      document.getElementById("qrcodeContainer").addEventListener("click", function() {
-        window.location.href = "https://www.youtube.com/shorts/v1SwEEO9nUM";
-      });
-    }
-
-    // Chama a função para gerar o QR Code ao carregar a página
-    window.onload = generateQRCode;
-  </script>
+        // Chama a função para gerar o QR Code ao carregar a página
+        window.onload = generateQRCode;
+    </script>
 </body>
+
 </html>
