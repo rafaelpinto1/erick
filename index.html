@@ -47,8 +47,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px;
       text-align: center;
-      max-width: 400px;
-      width: 100%;
+      max-width: 100%; /* Alterado para 100% para telas pequenas */
       position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
       z-index: 1; /* Coloca o conteúdo sobre o fundo */
     }
@@ -143,9 +142,16 @@
     }
 
     .qr-code img {
-      max-width: 50%;
+      max-width: 100%;
       height: auto;
       margin-bottom: 10px;
+    }
+
+    /* Regras de mídia para tornar o convite responsivo */
+    @media screen and (max-width: 600px) {
+      .qr-code img {
+        max-width: 80%;
+      }
     }
   </style>
 </head>
