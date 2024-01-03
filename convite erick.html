@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite de Aniversário</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden; /* Impede o scroll na página */
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* Garante que a imagem não interaja com os elementos na frente */
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.3); /* Alterado para 30% de opacidade */
+      z-index: 0; /* Coloca a sobreposição abaixo do conteúdo do convite */
+    }
+
+    .invitation {
+      background-color: rgba(255, 255, 255, 0.5); /* Alterado para 50% de opacidade */
+      border-radius: 15px; /* Adicionado border-radius para tornar o card redondo */
+      border: 2px solid silver; /* Adicionado uma borda prateada de 2 pixels */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
+      z-index: 1; /* Coloca o conteúdo sobre o fundo */
+    }
+
+    h1 {
+      color: #000;
+    }
+
+    p {
+      color: #000;
+    }
+
+    .event-details {
+      margin-top: 20px;
+    }
+
+    .event-details p {
+      margin: 10px 0;
+    }
+
+    .confirmation,
+    .address {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .confirmation a,
+    .address a {
+      text-decoration: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .confirmation a:hover,
+    .address a:hover {
+      background-color: #0056b3;
+    }
+
+    /* Botões personalizados */
+    .confirmation button,
+    .address button {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .confirmation button:hover,
+    .address button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Botão de play estilizado */
+    #playButton {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 50%; /* Borda arredondada para criar um botão de play circular */
+    }
+
+    #playButton:hover {
+      background-color: #0056b3;
+    }
+
+    /* Estilos para o QR Code */
+    .qr-code {
+      margin-top: 20px;
+      text-align: center; /* Centraliza o conteúdo */
+    }
+
+    .qr-code a {
+      display: block; /* Faz com que a âncora ocupe todo o espaço disponível */
+    }
+
+    .qr-code img {
+      max-width: 50%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <img class="background" src="imagem.gif" alt="Background GIF">
+  <div class="overlay"></div>
+  <div class="invitation">
+    <h1>Renaissance by </h1>
+    <h2>Erick Peterson</h2>
+    <p>Você foi convidado para celebrar o meu aniversário!</p>
+    <p>Aperte o play</p>
+
+    <!-- Botão de play estilizado -->
+    <button id="playButton" onclick="togglePlay()">
+      <i class="fas fa-play"></i>
+    </button>
+
+    <!-- Áudio de fundo com controles dentro do convite -->
+    <audio id="backgroundMusic" loop>
+      <source src="musica.ogg" type="audio/ogg">
+      Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <div class="event-details">
+      <p><strong>Data:</strong> 13/01/2023 às 15h</p>
+      <p><strong>Local:</strong> Simone Espaço Fest</p>
+      <p><strong>Endereço:</strong> R. Onze, lote 3 - Casal Garcia I, Itatiaia - RJ, 27580-000</p>
+    </div>
+
+    <div class="confirmation">
+      <button onclick="confirmPresence()">
+        Confirmar Presença <i class="fas fa-check"></i>
+      </button>
+    </div>
+
+    <div class="address">
+      <button onclick="callUber()">
+        Chamar Uber <i class="fab fa-uber"></i>
+      </button>
+
+      <!-- Novo botão para chamar Zé Delivery -->
+      <button onclick="callZeDelivery()">
+        Chamar Zé Delivery <i class="fas fa-motorcycle"></i>
+      </button>
+    </div>
+
+    <!-- Adicionando um QR Code -->
+    <div class="qr-code">
+      <a href="https://www.youtube.com/shorts/v1SwEEO9nUM" target="_blank"> <!-- Substitua "link_do_seu_qr_code_destino" pelo seu link desejado -->
+        <img src="convite.jpg" alt="QR Code">
+      </a>
+      <p>Escaneie ou clique no QR Code para acessar o convite</p>
+    </div>
+  </div>
+
+  <script>
+    // Funções para alternar a reprodução e pausa da música, confirmar presença, chamar Uber e Zé Delivery
+    function togglePlay() {
+      var audio = document.getElementById('backgroundMusic');
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+
+    function confirmPresence() {
+      // Adicione a lógica desejada para confirmar a presença
+      alert('Presença confirmada! Obrigado!');
+    }
+
+    function callUber() {
+      // Adicione a lógica desejada para chamar o Uber
+      alert('Uber chamado! Chegue com segurança!');
+    }
+
+    function callZeDelivery() {
+      // Redireciona para o link do Zé Delivery
+      window.location.href = 'https://www.ze.delivery/';
+    }
+  </script>
+</body>
+
+</html>
