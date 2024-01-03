@@ -19,7 +19,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            overflow: hidden; /* Impede o scroll na página */
+            overflow: ; /* Impede o scroll na página */
             background-image: url('imagem.gif');
             background-size: cover;
             background-position: center;
@@ -37,13 +37,15 @@
 
         .invitation {
             background-color: rgba(255, 255, 255, 0.5); /* Alterado para 50% de opacidade */
-            border-radius: 15px; /* Adicionado border-radius para tornar o card redondo */
-            border: 2px solid silver; /* Adicionado uma borda prateada de 2 pixels */
+            border-radius: 80px; /* Adicionado border-radius para tornar o card redondo */
+            border: 10px solid silver; /* Adicionado uma borda prateada de 2 pixels */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
             text-align: center;
-            max-width: 400px;
+            max-width: 250px;
+            max-height: 100%;
             width: 90%; /* Ajustado para 90% da largura do viewport */
+            height: 100%;
             position: relative; /* Garante que o conteúdo fique sobreposto ao fundo */
             z-index: 1; /* Coloca o conteúdo sobre o fundo */
         }
@@ -100,6 +102,7 @@
 </head>
 
 <body>
+
     <div class="overlay"></div>
     <div class="invitation">
         <h1>Renaissance by</h1>
@@ -125,7 +128,7 @@
         </div>
 
         <div class="confirmation">
-            <p>Por favor, confirme sua presença até 10/01/2023.</p>
+        
             <a class="action-button" href="https://wa.me/+5524981203032/?text=Oi Erick, minha presença ta confirmada. E fica tranquilo que sei que voçê é meu fã, e não fã do meu amigo. te vejo lá!! Bjs!">
                 Confirmar Presença
             </a>
@@ -144,7 +147,7 @@
         <div id="qrCodeContainerWrapper">
             <!-- Adiciona um contêiner para o QR Code -->
             <div id="qrcodeContainer"></div>
-            <p>Escaneie ou clique para acessar o convite</p>
+            Escaneie ou clique para acessar o convite
         </div>
     </div>
 
